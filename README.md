@@ -1,6 +1,6 @@
 # Fullstack Project
 
-## Technologies Used -
+## Technologies Used
 
 - TypeScript
 - GraphQL
