@@ -1,4 +1,6 @@
-# A Fullstack Project with backend and frontend from scratch using following technologies :
+# Fullstack Project
+
+## Technologies Used -
 
 - TypeScript
 - GraphQL
