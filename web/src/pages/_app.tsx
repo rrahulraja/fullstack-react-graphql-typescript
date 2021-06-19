@@ -8,9 +8,10 @@ import {
   RegisterMutation,
   LoginMutation,
   MeQuery,
+  LogoutMutation,
 } from "../generated/graphql";
 
-function betterUpdateQuery(
+function betterUpdateQuery<Result, Query>(
   cache: Cache,
   qi: QueryInput,
   result: any,
@@ -29,6 +30,14 @@ const client = createClient({
     cacheExchange({
       updates: {
         Mutation: {
+          logout: (_result, args, cache, info) => {
+            betterUpdateQuery<LogoutMutation, MeQuery>(
+              cache,
+              { query: MeDocument },
+              _result,
+              () => ({ me: null })
+            );
+          },
           login: (_result, args, cache, info) => {
             betterUpdateQuery<LoginMutation, MeQuery>(
               cache,
@@ -69,7 +78,7 @@ const client = createClient({
   ],
 });
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }:any) {
   return (
     <Provider value={client}>
       <ChakraProvider resetCSS theme={theme}>
