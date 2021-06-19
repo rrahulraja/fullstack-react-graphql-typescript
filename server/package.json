@@ -28,6 +28,7 @@
     "@mikro-orm/core": "^4.5.6",
     "@mikro-orm/migrations": "^4.5.6",
     "@mikro-orm/postgresql": "^4.5.6",
+    "@types/nodemailer": "^6.4.2",
     "apollo-server-express": "^2.25.1",
     "argon2": "^0.28.2",
     "class-validator": "^0.13.1",
@@ -36,6 +37,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "graphql": "^15.5.0",
+    "nodemailer": "^6.6.2",
     "pg": "^8.6.0",
     "redis": "^3.1.2",
     "type-graphql": "^1.1.1"
