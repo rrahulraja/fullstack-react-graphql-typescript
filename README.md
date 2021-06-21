@@ -7,4 +7,4 @@
 - Apollo
 - Node.js
 - PostgreSQL
-- MikroORM
+- TypeORM
