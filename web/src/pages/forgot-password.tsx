@@ -4,9 +4,7 @@ import { withUrqlClient } from "next-urql";
 import React, { useState } from "react";
 import { InputField } from "../components/InputField";
 import { Wrapper } from "../components/Wrapper";
-import {
-    useForgotPasswordMutation
-} from "../generated/graphql";
+import { useForgotPasswordMutation } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 const ForgotPassword: React.FC<{}> = ({}) => {
@@ -18,30 +16,35 @@ const ForgotPassword: React.FC<{}> = ({}) => {
       <Formik
         initialValues={{ email: "" }}
         onSubmit={async (values) => {
-            console.log(values);
           await forgotPassword(values);
           setComplete(true);
         }}
       >
-        {({ isSubmitting }) => complete ? <Box>If an account with that email exists, we send you an email</Box> : (
-          <Form>
-            <InputField
-              name="email"
-              placeholder="Email"
-              label="Email"
-              type="email"
-            />
+        {({ isSubmitting }) =>
+          complete ? (
+            <Box>
+              If an account with that email exists, we send you an email
+            </Box>
+          ) : (
+            <Form>
+              <InputField
+                name="email"
+                placeholder="Email"
+                label="Email"
+                type="email"
+              />
 
-            <Button
-              mt={4}
-              type="submit"
-              colorScheme="teal"
-              isLoading={isSubmitting}
-            >
-              Forgot Password
-            </Button>
-          </Form>
-        )}
+              <Button
+                mt={4}
+                type="submit"
+                colorScheme="teal"
+                isLoading={isSubmitting}
+              >
+                Forgot Password
+              </Button>
+            </Form>
+          )
+        }
       </Formik>
     </Wrapper>
   );

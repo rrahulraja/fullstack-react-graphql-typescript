@@ -6,7 +6,11 @@ import { Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 const Index = () => {
-  const [{ data }] = usePostsQuery();
+  const [{ data }] = usePostsQuery({
+    variables: {
+      limit: 15,
+    },
+  });
   return (
     <Layout>
       <NextLink href="/create-post">
