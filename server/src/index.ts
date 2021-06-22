@@ -13,19 +13,23 @@ import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import { MyContext } from "./types";
+import path from "path";
 
 const main = async () => {
-  await createConnection({
+  const conn = await createConnection({
     type: "postgres",
     database: "lireddit2",
     username: "postgres",
     password: "postgres",
     logging: true,
     synchronize: true,
-    entities: [Post, User]
+    migrations: [path.join(__dirname, "./migrations/*")],
+    entities: [Post, User],
   });
 
   // await Post.delete({});
+
+  await conn.runMigrations();
 
   const app = express();
 
