@@ -1,11 +1,7 @@
 import { Layout } from "../components/Layout";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import {
-  usePostsQuery,
-  useDeletePostMutation,
-  useMeQuery,
-} from "../generated/graphql";
+import { usePostsQuery } from "../generated/graphql";
 import {
   Link,
   Box,
@@ -14,12 +10,11 @@ import {
   Text,
   Flex,
   Button,
-  IconButton,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 import { useState } from "react";
 import { UpdootSection } from "../components/UpdootSection";
+import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 
 const Index = () => {
   const [variables, setVariables] = useState({
@@ -27,11 +22,7 @@ const Index = () => {
     cursor: null as null | string,
   });
 
-  const [{ data: meData }] = useMeQuery();
-
   const [{ data, fetching }] = usePostsQuery({ variables });
-
-  const [, deletePost] = useDeletePostMutation();
 
   if (!fetching && !data) {
     return <div>Don't have any posts to show!</div>;
@@ -58,32 +49,12 @@ const Index = () => {
                     <Text flex={1} mt={4}>
                       {p.textSnippet}
                     </Text>
-                    {meData?.me?.id !== p.creator.id ? null : (
-                      <Box ml="auto">
-                        <NextLink
-                          href="/post/edit/[id]"
-                          as={`/post/edit/${p.id}`}
-                        >
-                          <IconButton
-                            icon={<EditIcon />}
-                            aria-label="Edit"
-                            mr={4}
-                            as={Link}
-                            onClick={() => {
-                              // deletePost({ id: p.id });
-                            }}
-                          />
-                        </NextLink>
-
-                        <IconButton
-                          icon={<DeleteIcon />}
-                          aria-label="Delete Post"
-                          onClick={() => {
-                            deletePost({ id: p.id });
-                          }}
-                        />
-                      </Box>
-                    )}
+                    <Box ml="auto">
+                      <EditDeletePostButtons
+                        id={p.id}
+                        creatorId={p.creator.id}
+                      />
+                    </Box>
                   </Flex>
                 </Box>
               </Flex>
