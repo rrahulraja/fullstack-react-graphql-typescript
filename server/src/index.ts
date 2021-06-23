@@ -1,3 +1,4 @@
+import "dotenv-safe/config";
 import { createUpdootLoader } from "./utils/createUpdootLoader";
 import { Updoot } from "./entities/Updoot";
 import { ApolloServer } from "apollo-server-express";
@@ -21,9 +22,7 @@ import path from "path";
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
-    database: "lireddit2",
-    username: "postgres",
-    password: "postgres",
+    url: process.env.DATABASE_URL,
     logging: true,
     synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
@@ -37,11 +36,11 @@ const main = async () => {
   const app = express();
 
   const RedisStore = connectRedis(session);
-  const redis = new Redis();
+  const redis = new Redis(process.env.REDIS_URL);
 
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: process.env.CORS_ORIGIN,
       credentials: true,
     })
   );
@@ -54,10 +53,11 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax", // csrf protection
         secure: __prod__, // cookie only works in https
+        domain: __prod__ ? ".codeponder.com" : undefined,
       },
       name: COOKIE_NAME,
       saveUninitialized: false,
-      secret: "qwerty",
+      secret: process.env.SESSION_SECRET,
       resave: false,
     })
   );
@@ -81,7 +81,9 @@ const main = async () => {
     cors: false,
   });
 
-  app.listen(4000, () => console.log("Server started on localhost:4000"));
+  app.listen(parseInt(process.env.PORT), () =>
+    console.log("Server started on localhost:4000")
+  );
 };
 
 main();
