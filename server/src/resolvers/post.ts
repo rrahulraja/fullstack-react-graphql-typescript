@@ -1,4 +1,3 @@
-import { Updoot } from "./../entities/Updoot";
 import { getConnection } from "typeorm";
 import { isAuth } from "../middleware/isAuth";
 import { MyContext } from "../types";
@@ -107,7 +106,8 @@ export class PostResolver {
   @Query(() => PaginatedPosts)
   async posts(
     @Arg("limit", () => Int) limit: number,
-    @Arg("cursor", () => String, { nullable: true }) cursor: string | null
+    @Arg("cursor", () => String, { nullable: true }) cursor: string | null,
+    @Ctx() { req }: MyContext
   ): Promise<PaginatedPosts> {
     // 20 -> 21
     const realLimit = Math.min(50, limit);
@@ -121,16 +121,25 @@ export class PostResolver {
 
     const posts = await getConnection().query(
       `
-      select p.*,
-      json_build_object(
-        'id', u.id,
-        'username', u.username,
-        'email', u.email
-        ) creator
-      from post p 
-      inner join public.user u on u.id = p."creatorId"
-      ${cursor ? `where p."createdAt" < $2` : ""}
-      order by p."createdAt" DESC limit $1`,
+    select p.*,
+    json_build_object(
+      'id', u.id,
+      'username', u.username,
+      'email', u.email,
+      'createdAt', u."createdAt",
+      'updatedAt', u."updatedAt"
+      ) creator,
+    ${
+      req.session.userId
+        ? '(select value from updoot where "userId" = 1 and "postId" = p.id) "voteStatus"'
+        : 'null as "voteStatus"'
+    }
+    from post p
+    inner join public.user u on u.id = p."creatorId"
+    ${cursor ? `where p."createdAt" < $2` : ""}
+    order by p."createdAt" DESC
+    limit $1
+    `,
       replacements
     );
 
