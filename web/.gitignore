@@ -9,3 +9,7 @@
 
 # production
 /build
+
+# environment files
+.env.development
+.env.production
