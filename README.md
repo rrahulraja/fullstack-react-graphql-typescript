@@ -2,9 +2,14 @@
 
 ## Technologies Used
 
+- React
 - TypeScript
 - GraphQL
-- Apollo
+- URQL/Apollo
 - Node.js
 - PostgreSQL
-- TypeORM
+- MikroORM/TypeORM
+- Redis
+- Next.js
+- TypeGraphQL
+- Chakra
