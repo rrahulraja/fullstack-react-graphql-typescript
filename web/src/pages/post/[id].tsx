@@ -8,9 +8,9 @@ import { EditDeletePostButtons } from "../../components/EditDeletePostButtons";
 import { Heading, Box } from "@chakra-ui/react";
 
 const Post = ({}) => {
-  const [{ data, error, fetching }] = useGetPostFromUrl();
+  const { data, error, loading } = useGetPostFromUrl();
 
-  if (fetching) {
+  if (loading) {
     return (
       <Layout>
         <div>loading...</div>
@@ -42,4 +42,4 @@ const Post = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Post);
+export default Post;
