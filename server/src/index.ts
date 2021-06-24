@@ -29,6 +29,7 @@ const main = async () => {
     entities: [Post, User, Updoot],
   });
 
+  // Uncomment the below line to run migraions on database server
   await conn.runMigrations();
 
   // await Post.delete({});
