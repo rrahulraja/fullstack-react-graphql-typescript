@@ -1,6 +1,6 @@
 # Fullstack Project
 
-## Technologies Used
+#### Frameworks/Libraries Used
 
 - React
 - TypeScript
